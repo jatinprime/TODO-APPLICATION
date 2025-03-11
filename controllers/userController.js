@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel");
+const bcrypt = require("bcryptjs") ;
 
 const registerController = async (req, res) => {
     try {
@@ -21,14 +22,17 @@ const registerController = async (req, res) => {
             });
         }
 
+        const salt = await bcrypt.genSalt(10) ;
+        const hashedPassword = await bcrypt.hash(password , salt) ;
+
         //SAVE USER
-        const newUser = new userModel({ username, email, password });
+        const newUser = new userModel({ username, email, password : hashedPassword });
         await newUser.save();
 
         return res.status(201).send({
             success: true,
             message: "User Register Successfully",
-            user
+            newUser
         });
     } catch (error) {
         console.log(error);
@@ -54,7 +58,7 @@ const loginController = async (req, res) => {
         }
 
         //find user
-        const user = await userModel.findOne({email , password}) ;
+        const user = await userModel.findOne({email}) ;
         //validation
         if(!user){
             return res.status(500).send({
@@ -63,10 +67,19 @@ const loginController = async (req, res) => {
             })
         }
 
+        //match password
+        const isMatch = await bcrypt.compare(password , user.password) ;
+        if(!isMatch){
+            return res.status(500).send({
+                success : false , 
+                message : "Invalid Credentials"
+            });
+        }
+
         //IF U WANT TO HIDE SOMETHING FROM SENDING TO CLIENT , WE {user.property = undefinde}
         user.password = undefined ;
 
-        
+
         res.status(200).send({
             success : true , 
             message : "Login Successfully",
