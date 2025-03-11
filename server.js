@@ -3,9 +3,13 @@ const morgan = require("morgan") ;
 const dotenv = require("dotenv") ;
 const colors = require("colors") ;
 const cors = require("cors") ;
+const connectDB = require("./config/db");
 
 //CONFIGURATION
 dotenv.config() ;
+
+//DB CONNECTION
+connectDB() ;
 
 //REST OBJECT
 const app = express() ;
@@ -16,9 +20,7 @@ app.use(morgan("dev")) ;
 app.use(cors()) ;      // {cross origin error remover} USEFUL TO SOLVE THE CONFLICTS BETWEEN DIFFERENT ORIGIN OF FRONTEND (CLIENT) AND BACKEND (SERVER)
 
 //ROUTES
-app.get('/test' , (req , res) => {
-    res.status(200).send('<h1>Welcome to Node Todo Server</h1>') ;
-})
+app.use('/api/v1/test' , require('./routes/testRoute'))
 
 //PORT
 const PORT = process.env.PORT || 8080
