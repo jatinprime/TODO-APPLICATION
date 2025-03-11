@@ -1,5 +1,6 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs") ;
+const JWT = require("jsonwebtoken")
 
 const registerController = async (req, res) => {
     try {
@@ -76,13 +77,18 @@ const loginController = async (req, res) => {
             });
         }
 
+        //token
+        const token = await JWT.sign({id:user._id} , process.env.JWT_SECRET , {expiresIn : "7d"})
+
         //IF U WANT TO HIDE SOMETHING FROM SENDING TO CLIENT , WE {user.property = undefinde}
         user.password = undefined ;
+        // token.password = undefined ;
 
 
         res.status(200).send({
             success : true , 
             message : "Login Successfully",
+            token,
             user
         })
     } catch (error) {
