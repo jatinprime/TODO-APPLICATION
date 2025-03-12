@@ -3,6 +3,7 @@ import { Link , useNavigate } from "react-router-dom";
 import "./AuthStyles.css";
 import AuthServices from "../../Services/AuthServices";
 import toast from 'react-hot-toast'
+import { getErrorMessage } from "../../Utils/ErrorMessage";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -30,7 +31,8 @@ const Login = () => {
 
             console.log(res.data)
         }catch(error){
-            toast.error("Something went wrong") ;
+            console.log("Testing purpose console statement")
+            toast.error(getErrorMessage(error)) ;
             console.log(error) ;
         }
     };
