@@ -4,6 +4,8 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import About from "./pages/About/About";
 import TodoList from "./pages/ToDos/TodoList";
+import { Toaster } from "react-hot-toast";
+import HomePage from "./pages/Home/HomePage";
 
 //Routes will work like a container
 //Route will be a single working route
@@ -21,11 +23,13 @@ function App() {
         <div>
             <Routes>
                 <Route path="/" element={<Landing />} />
+                <Route path="/home" element={<HomePage/>}/>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/todoList" element={<TodoList />} />
             </Routes>
+            <Toaster />
         </div>
     );
 }

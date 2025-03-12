@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./AuthStyles.css";
+import AuthServices from "../../Services/AuthServices";
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -8,12 +9,16 @@ const Register = () => {
     const [username , setUsername] = useState("") ;
 
     //login function
-    const registerHandler = (e) => {
-        try {
-            e.preventDefault(); //to avoid the default behaviour
-            alert("Register Data " + email + " " + password + " " + username);
-        } catch (error) {
-            console.log(error);
+    const registerHandler = async (e) => {
+        try{
+            e.preventDefault() ;
+            const data = {email , password , username} ;
+
+            // Now we have taken the data and we will make the request to server and receive data
+            const res = await AuthServices.registerUser(data) ;
+            console.log(res.data) ;
+        }catch(error){
+            console.log(error) ;
         }
     };
 
