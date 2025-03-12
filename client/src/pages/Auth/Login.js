@@ -21,11 +21,21 @@ const Login = () => {
             toast.success(res.data.message) ;
             //now we have to navigate the person as well
             navigate('/home') ;
-            console.log(res.data) ;
+
+            //--------------------------- STORING THE TOKEN IN LOCAL STORAGE-----------
+            //we cannot store object directly , we can store string , so that is why , we will use stringify function of JSON
+            localStorage.setItem('todoapp' , JSON.stringify(res.data))
+
+            //-----------------------------------------------------------------------
+
+            console.log(res.data)
         }catch(error){
+            toast.error("Something went wrong") ;
             console.log(error) ;
         }
     };
+
+    //we will store the token stuff in local storage only instead of any database
 
     return (
         <div className="form-container">

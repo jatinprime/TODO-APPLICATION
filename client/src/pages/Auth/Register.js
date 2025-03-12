@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./AuthStyles.css";
 import AuthServices from "../../Services/AuthServices";
+import toast from "react-hot-toast";
 
 const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username , setUsername] = useState("") ;
+
+
+    const navigate = useNavigate() ;    //to use hooks , first we have to make the varible for it
 
     //login function
     const registerHandler = async (e) => {
@@ -16,8 +20,14 @@ const Register = () => {
 
             // Now we have taken the data and we will make the request to server and receive data
             const res = await AuthServices.registerUser(data) ;
-            console.log(res.data) ;
+            toast.success(res.data.message) ;
+            //now we have to navigate the person as well
+            navigate('/login') ;
+
+
+            console.log(res.data)
         }catch(error){
+            toast.error("Something Went Wrong") ;
             console.log(error) ;
         }
     };
